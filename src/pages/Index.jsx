@@ -49,7 +49,7 @@ const Index = () => {
           {/* Hero Image */}
           <div className="relative z-10 mb-8 animate-on-scroll">
             <img 
-              src="/src/assets/hero_background_2.png" 
+              src="/hero_background_2.png" 
               alt="Children learning English" 
               className="mx-auto max-w-md w-full h-auto rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-300"
             />
