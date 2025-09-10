@@ -58,7 +58,7 @@ const Index = () => {
           {/* Hero Text */}
           <div className="relative z-10 animate-on-scroll">
             <h1 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 mb-6 animate-pulse">
-              English for Nusa 
+              Nusa Tales 
             </h1>
             <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto">
              Interative English Learning with Indonesian Culture
@@ -183,7 +183,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-12 px-4">
         <div className="container mx-auto text-center">
-          <h3 className="text-2xl font-bold mb-4">English for Nusa</h3>
+          <h3 className="text-2xl font-bold mb-4">Nusa Tales</h3>
           <p className="text-gray-400 mb-6">Learning English the fun way, with the beauty of Nusantara culture.</p>
           <div className="flex justify-center space-x-6">
             <span className="text-3xl animate-bounce">🎈</span>
