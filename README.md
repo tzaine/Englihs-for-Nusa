@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Atlas Robotics Landing Page Template
 
 A modern, responsive landing page template for robotics companies, built with React and Tailwind CSS.
@@ -101,3 +102,6 @@ This template is configured for Atlas Robotics as an example. To customize for y
 ## Contributing
 
 Feel free to submit issues and enhancement requests!
+=======
+# Englihs-for-Nusa
+>>>>>>> 5c69fa664a7fea354806be1fe8e463b4d7cd669b
