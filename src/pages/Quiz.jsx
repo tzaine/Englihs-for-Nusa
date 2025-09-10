@@ -53,7 +53,7 @@ Based on the text, the function of a tongkonan house is`,
     },
     {
       id: 3,
-      question: "Its beauty the underlined word refers to...",
+      question: "“(Its) beauty” the parentheses word refers to...",
       options: [
         "Tongkonan house",
         "The buffalo horn",
@@ -171,7 +171,7 @@ Apart from being a traditional dance, what are the other functions of the saman 
     {
       id: 27,
       question:
-        "(It) is a medium for conveying messages..” The word caged refers to?",
+        "(It) is a medium for conveying messages..” The word parentheses refers to?",
       options: ["Aceh", "The Saman dance", "Traditional dance", "Dancers"],
       correctAnswer: 1,
       explanation: "The Saman dance",
@@ -1087,12 +1087,12 @@ const Quiz = () => {
         <Card className="max-w-4xl mx-auto bg-white/90 backdrop-blur-sm shadow-2xl border-4 border-blue-200">
           <CardContent className="p-8 md:p-12">
             {/* Navigation Buttons */}
-            <div className="flex justify-between mb-8">
+            <div className="flex flex-col md:flex-row justify-between gap-4 mb-8">
               <Button
                 onClick={handlePrevious}
                 disabled={currentQuestion === 0}
                 variant="outline"
-                className="bg-white/80 backdrop-blur-sm hover:bg-white/90 border-2 border-gray-300 rounded-full px-6 py-3"
+                className="w-full md:w-auto bg-white/80 backdrop-blur-sm hover:bg-white/90 border-2 border-gray-300 rounded-full px-6 py-3"
               >
                 <ArrowLeft className="w-5 h-5 mr-2" />
                 Previous Question
@@ -1105,7 +1105,7 @@ const Quiz = () => {
                   currentQuestion === questionsData[selectedFolder].length - 1
                 }
                 variant="outline"
-                className="bg-white/80 backdrop-blur-sm hover:bg-white/90 border-2 border-gray-300 rounded-full px-6 py-3"
+                className="w-full md:w-auto bg-white/80 backdrop-blur-sm hover:bg-white/90 border-2 border-gray-300 rounded-full px-6 py-3"
               >
                 Next Question
                 <ArrowRight className="w-5 h-5 ml-2" />

@@ -49,7 +49,7 @@ const Index = () => {
           {/* Hero Image */}
           <div className="relative z-10 mb-8 animate-on-scroll">
             <img 
-              src="/hero_background_2.png" 
+              src="/nusa.png" 
               alt="Children learning English" 
               className="mx-auto max-w-md w-full h-auto rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-300"
             />
@@ -61,7 +61,7 @@ const Index = () => {
               Nusa Tales 
             </h1>
             <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto">
-             Interative English Learning with Indonesian Culture
+             Interactive English Learning with Indonesian Culture
             </p>
             
             <Button 
