@@ -30,7 +30,7 @@ const Index = () => {
   }, []);
 
   const handleStartLearning = () => {
-    navigate("/dashboard");
+    navigate("/login");
   };
 
   return (
@@ -171,7 +171,7 @@ const Index = () => {
             </p>
             
             <Button 
-              onClick={handleStartLearning}
+              onClick={() => navigate("/login")}
               className="bg-white text-purple-600 hover:bg-gray-100 text-2xl px-16 py-8 rounded-full shadow-2xl transform hover:scale-110 transition-all duration-300 font-bold"
             >
               🎯 Join Now! 

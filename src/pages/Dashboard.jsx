@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen, Gamepad2, QrCode, Home, Star, Trophy, Heart } from "lucide-react";
+import { getStudentSession } from "@/utils/studentAuth";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -132,7 +133,16 @@ const Dashboard = () => {
                 key={item.id}
                 className={`group hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 hover:rotate-1 cursor-pointer bg-gradient-to-br ${item.bgColor} border-4 ${item.borderColor} animate-on-scroll`}
                 style={{ animationDelay: `${index * 200}ms` }}
-                onClick={() => navigate(item.path)}
+                onClick={() => {
+                  const session = getStudentSession();
+                  if (session) {
+                    // Map general path to student-specific path
+                    const studentPaths = { "/quiz": "/student/quiz", "/materials": "/materials", "/qr-access": "/qr-access" };
+                    navigate(studentPaths[item.path] || item.path);
+                  } else {
+                    navigate("/login");
+                  }
+                }}
               >
                 <CardContent className="p-8 text-center relative overflow-hidden">
                   {/* Background decoration */}
