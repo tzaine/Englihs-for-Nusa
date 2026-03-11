@@ -569,6 +569,248 @@ To admire = Mengagumi`,
       },
     },
   },
+  folder3: {
+    name: "Culture of Semarang",
+    description: "Explore the rich culture of Semarang city",
+    type: "subfolders",
+    subfolders: {
+      subbab1: {
+        name: "Traditional Dance",
+        description: "",
+        type: "culture",
+        materials: [
+          {
+            id: 1,
+            title: "Denok Dance",
+            items: [
+              {
+                title: "Denok Dance",
+                imageUrl: "D:\\LIDM\Englihs-for-Nusa\src\assets\denoktari.jpg",
+                description: `The Denok dance originates from Semarang, the capital of Central Java, and is influenced by Surakarta-style movements, including ngrayung (hand movements), ukel (hand movement), ngithing (hand movements), mendak (body movements), tolehan (head movements), and gejug (foot movements). Denok Dance is a new creation from Bintang Hanggoro Putra, a traditional dance from Semarang.
+                The process of the Denok Dance focuses on the uniqueness and beauty values ​​so that the people of Semarang City are interested in learning and preserving the dance which is the characteristic dance art of Semarang City. Denok Dance has a beautiful side in its performance form, both in terms of musical accompaniment, make-up and costumes, movements, dancers, properties, and stage design techniques. The characteristics of the Denok Dance lie in its various movements: ngeyek, ngondek, jalan tapak, and geol. The ngeyek movements in the Denok Dance are almost identical to the leyek movements in the Surakarta Dance.`,
+              },
+            ],
+          },
+          // {
+          //   id: 2,
+          //   title: "Gambang Semarang Dance",
+          //   items: [
+          //     {
+          //       title: "Gambang Semarang Dance",
+          //       imageUrl: "/semarang/dance/gambang.jpg",
+          //       description: `Gambang Semarang is a traditional performance art from Semarang that combines dance, music, and comedy. The dance is lively and cheerful, performed to the rhythm of gambang (a traditional xylophone). It reflects the multicultural character of Semarang, blending Javanese, Chinese, and Islamic influences.`,
+          //     },
+          //   ],
+          // },
+          // {
+          //   id: 3,
+          //   title: "Semarangan Dance",
+          //   items: [
+          //     {
+          //       title: "Semarangan Dance",
+          //       imageUrl: "/semarang/dance/semarangan.jpg",
+          //       description: `Semarangan Dance is a modern traditional dance created to represent the identity of Semarang city. The dance showcases dynamic movements that tell the story of Semarang's history, from its coastal origins to its development as a major city in Central Java.`,
+          //     },
+          //   ],
+          // },
+          // {
+          //   id: 4,
+          //   title: "Kuntulan Dance",
+          //   items: [
+          //     {
+          //       title: "Kuntulan Dance",
+          //       imageUrl: "/semarang/dance/kuntulan.jpg",
+          //       description: `Kuntulan Dance is a traditional dance from the northern coast of Central Java, including Semarang. It is performed by a group of dancers with energetic movements accompanied by terbang (tambourine) music. This dance has Islamic influence and is usually performed during cultural and religious celebrations.`,
+          //     },
+          //   ],
+          // },
+          // {
+          //   id: 5,
+          //   title: "Ongkek Dance",
+          //   items: [
+          //     {
+          //       title: "Ongkek Dance",
+          //       imageUrl: "/semarang/dance/ongkek.jpg",
+          //       description: `Ongkek Dance is a folk dance from Semarang area. It is a fun and playful dance usually performed during harvest festivals or community celebrations. The movements are simple but joyful, representing the happiness of the local people.`,
+          //     },
+          //   ],
+          // },
+        ],
+      },
+      subbab2: {
+        name: "Local Food",
+        description: "",
+        type: "culture",
+        materials: [
+          {
+            id: 1,
+            title: "Lumpia",
+            items: [
+              {
+                title: "Lumpia",
+                imageUrl: "D:\LIDM\Englihs-for-Nusa\src\assets\lumpia.jpg",
+                description: `Loenpia is a type of traditional Chinese snack. Lumpia, as it is known to Indonesians, is pronounced Hokkien. Semarang Lumpia is a culinary heritage resulting from the fusion of Chinese and Javanese culture.
+                Lumpia are made from thin sheets of wheat flour used as a wrapper for fillings which are generally bamboo shoots, eggs, fresh vegetables, meat or seafood. This dish is typically round and often fried, filled with flour or tofu skin and a mix of vegetables. However, some types of spring rolls contain only one type of vegetable, such as bamboo shoots, while others contain minced meat.`,
+              },
+            ],
+          },
+          {
+            id: 2,
+            title: "Bandeng Presto",
+            items: [
+              {
+                title: "Bandeng Presto",
+                imageUrl: "/semarang/food/wingko.jpg",
+                description: `Bandeng presto is a famous traditional food from Semarang. It is made from milkfish that is cooked using a special pressure cooker. 
+                This cooking method uses high pressure and heat to make the fish very soft, including the bones. As a result, the bones become tender and safe to eat. The fish is usually seasoned with garlic, turmeric, and salt, which give it a delicious savory taste. Bandeng Presto is usually served fried. Bandeng presto has a soft texture, rich flavor, and a distinctive aroma. It is often served with rice, chili sauce, and fresh vegetables. Because of its unique cooking process and tasty flavor, bandeng presto has become one of the most popular culinary icons of Semarang.`,
+              },
+            ],
+          },
+          {
+            id: 3,
+            title: "Tahu Bakso",
+            items: [
+              {
+                title: "Tahu Bakso",
+                imageUrl: "/semarang/food/bandeng.jpg",
+                description: `Tahu bakso is a popular traditional food from Central Java that originally comes from Ungaran, a town in Semarang Regency. It is made from tofu filled with a mixture of minced beef, garlic, pepper, and flour. The tofu is soft on the outside, while the meat filling inside is savory and flavorful. After being filled, the tofu is usually steamed until the meat is fully cooked. Some people also fry it to make the outside crispy. Tahu bakso has a delicious taste and a unique texture because it combines soft tofu with chewy meat filling. It is often served with chili sauce or eaten as a side dish with rice. Because of its tasty flavor, tahu bakso has become one of the famous culinary specialties from the Semarang area.`,
+              },
+            ],
+          },
+          {
+            id: 4,
+            title: "Tahu Gimbal",
+            items: [
+              {
+                title: "Tahu Gimbal",
+                imageUrl: "/semarang/food/tahugimbal.jpg",
+                description: `Tahu gimbal is a traditional culinary dish from Semarang, Central Java. This dish is known for its unique combination of savory, sweet, and slightly spicy flavors. The name "gimbal" comes from shrimp fried in a flour batter until crispy.
+                Tahu gimbal consists of fried tofu, lontong (rice cake), vegetables such as cabbage and bean sprouts, and shrimp fritters called “gimbal.” The shrimp fritters are made from shrimp mixed with flour batter and then deep-fried until crispy. All the ingredients are served together and topped with a thick and flavorful peanut sauce. The sauce gives the dish a rich and delicious taste. Tahu gimbal has a unique texture because it combines soft tofu, crunchy shrimp fritters, and fresh vegetables. This traditional food is very popular in Semarang and is commonly sold by street vendors in many parts of the city.`,
+              },
+            ],
+          },
+        ],
+      },
+      subbab3: {
+        name: "Public Place",
+        description: "",
+        type: "culture",
+        materials: [
+          {
+            id: 1,
+            title: "Lawang Sewu",
+            items: [
+              {
+                title: "Lawang Sewu",
+                imageUrl: "/semarang/place/lawangsewu.jpg",
+                description: `Lawang Sewu is one of the many historical buildings in Indonesia. Lawang Sewu is from Javanese language which mean “thousand doors” is a landmark in Semarang, Central Java, Indonesia. This building is a well-known landmark in Semarang, Central Java, and it was originally built as the headquarters of the Dutch East Indies Railway Company.
+                The complex consists of several buildings, two main building named A and B and two smaller building than A and B, its C and D. Lawang sewu located in pemuda street. the L-shaped A building faces the Tugu Muda roundabout. There are two idenctical towers on A building, which were originally used to save water, with capacity of 7000 liters. The building have the large stained-glass windows and a grand staircase in the center. There was also once an underground tunnel connecting A building to several other sites in the city, including the governor’s mansion and the harbour.`,
+              },
+            ],
+          },
+          {
+            id: 2,
+            title: "Sam Poo Kong",
+            items: [
+              {
+                title: "Sam Poo Kong",
+                imageUrl: "/semarang/place/sampookong.jpg",
+                description: `Sam Poo Kong is also known as Gedung Batu Temple, is the oldest Chinese temple in Semarang, the capital city of Jawa Tengah province.
+                The temple covers an area of about 1,020 square meters and shows a unique combination of Chinese and Javanese architectural styles from the 14th century. The building is painted in a bright red color and has a three-layered roof that is typical of East Asian temples. Sam Poo Kong is located on Jalan Simongan. The temple is closely related to Cheng Ho, a famous Chinese Muslim explorer who once visited Java. Today, this temple functions as a place of worship and a historical site to honor Cheng Ho. It is also one of the most popular cultural and religious tourist destinations in Semarang.`,
+              },
+            ],
+          },
+          {
+            id: 3,
+            title: "Semarang Old Town",
+            items: [
+              {
+                title: "Semarang Old Town",
+                imageUrl: "/semarang/place/simpanglima.jpg",
+                description: `Semarang old town is a famous historical area located in Semarang, Central Java. This place is well known for its beautiful old buildings that were built during the Dutch colonial period. Many of the buildings have unique European architectural styles with large windows, tall doors, and strong walls. Because of its classic atmosphere,  Semarang old town is often called “Little Netherlands.”
+                One of the most iconic buildings in this area is the Blenduk Church, which has a large dome and historical value. Currently, Semarang old town has become a popular tourist destination where visitors can walk around, take photos, enjoy cafes, and learn about the history of the city. The area offers a unique combination of history, culture, and beautiful architecture. The good thing is tourists are able to explore them all freely. Most of the buildings apply the Dutch architecture, for sure. In fact, these structures have been there since the 18th century. Despite the age, the condition remains good and sturdy. The appearance doesn’t look too good, though. It is because the local government wants to retain its historical value, so they decided to keep it that way.`,
+              },
+            ],
+          },
+          {
+            id: 4,
+            title: "Ranggawarsito Museum",
+            items: [
+              {
+                title: "Ranggawarsito Museum",
+                imageUrl: "/semarang/place/kotalama.jpg",
+                description: `Ranggawarsita Museum is one of the largest museums in Central Java. It is located in Semarang and is named after Ranggawarsita, a famous Javanese poet and cultural figure. The museum is an important place to learn about the history, culture, and natural heritage of Central Java. 
+                The museum has several exhibition buildings that display many historical and cultural collections. Visitors can see ancient artifacts, traditional weapons, statues, ceramics, and historical objects from different periods. The museum also shows collections related to geology, archaeology, and traditional Javanese culture. Inside the museum, there are displays about prehistoric life, ancient kingdoms, and traditional tools used by people in the past. The buildings are spacious and organized, making it easier for visitors to explore the collections. Because of its rich collections and educational value, Museum Ranggawarsita is a popular destination for students, researchers, and tourists who want to learn more about the history and culture of Central Java.`,
+              },
+            ],
+          },
+        ],
+      },
+      subbab4: {
+        name: "Festival Semarang",
+        description: "",
+        type: "culture",
+        materials: [
+          {
+            id: 1,
+            title: "Dugderan Festival",
+            items: [
+              {
+                title: "Dugderan Festival",
+                imageUrl: "/semarang/festival/dugderan.jpg",
+                description: `Dugderan is a typical festival of Semarang City which marks the start of fasting in the holy month of Ramadan. The celebration is opened by the mayor and enlivened by a number of firecrackers and fireworks. 
+                "Dug" refers to the sound of the drum (bedug) played during Maghrib prayers. Meanwhile, "der-an" refers to the sound of the firecrackers that accompany this activity. The Dugderan tradition has been held since 1882 during the Semarang Regentship under the leadership of Regent R.M. Tumenggung Ario Purbaningrat. The celebration, which began in colonial times, was centered around the Great Mosque of Semarang (Kauman Mosque), located in the center of Semarang's old city near Johar Market.`,
+              },
+            ],
+          },
+          // {
+          //   id: 2,
+          //   title: "Semarang Night Carnival",
+          //   items: [
+          //     {
+          //       title: "Semarang Night Carnival",
+          //       imageUrl: "/semarang/festival/nightcarnival.jpg",
+          //       description: `Semarang Night Carnival is a modern annual festival featuring colorful floats, elaborate costumes, and spectacular light shows. Participants parade through the streets of the city at night, creating a magical atmosphere that attracts thousands of spectators.`,
+          //     },
+          //   ],
+          // },
+          // {
+          //   id: 3,
+          //   title: "Sam Poo Kong Festival",
+          //   items: [
+          //     {
+          //       title: "Sam Poo Kong Festival",
+          //       imageUrl: "/semarang/festival/sampookongfest.jpg",
+          //       description: `Sam Poo Kong Festival is held annually at the Sam Poo Kong Temple to commemorate the arrival of Admiral Zheng He in Semarang. The festival includes traditional Chinese lion and dragon dances, cultural performances, and religious ceremonies that celebrate the multicultural heritage of Semarang.`,
+          //     },
+          //   ],
+          // },
+          // {
+          //   id: 4,
+          //   title: "Kota Lama Festival",
+          //   items: [
+          //     {
+          //       title: "Kota Lama Festival",
+          //       imageUrl: "/semarang/festival/kotalamafest.jpg",
+          //       description: `Kota Lama Festival is an annual event held in the Old Town area of Semarang. It features art exhibitions, music performances, food bazaars, and cultural activities. The festival aims to revitalize the historic district and promote Semarang's arts and culture scene.`,
+          //     },
+          //   ],
+          // },
+          // {
+          //   id: 5,
+          //   title: "Sesaji Rewanda Festival",
+          //   items: [
+          //     {
+          //       title: "Sesaji Rewanda Festival",
+          //       imageUrl: "/semarang/festival/sesajirewanda.jpg",
+          //       description: `Sesaji Rewanda is a traditional ceremony held in Semarang's Mangkang area. It is a unique event where offerings are presented for the monkeys living in the local mangrove area. The ceremony symbolizes the harmony between humans and nature, and is accompanied by traditional Javanese performances.`,
+          //     },
+          //   ],
+          // },
+        ],
+      },
+    },
+  },
 };
 
 const Materials = () => {
@@ -586,14 +828,22 @@ const Materials = () => {
       description:
         "Let's learn what descriptive text in English easily!.",
       icon: "📚",
-      bgColor: "from-blue-100 to-blue-200",
-      borderColor: "border-blue-300",
+      bgColor: "from-green-100 to-green-200",
+      borderColor: "border-green-300",
     },
     {
       id: "folder2",
       name: "Indonesian Culture",
       description: "Inside this chapter, you'll explore culture through descriptive text",
       icon: "🖼️",
+      bgColor: "from-green-100 to-green-200",
+      borderColor: "border-green-300",
+    },
+    {
+      id: "folder3",
+      name: "Culture of Semarang",
+      description: "Discover the unique traditions, food, places, and festivals of Semarang city",
+      icon: "🏛️",
       bgColor: "from-green-100 to-green-200",
       borderColor: "border-green-300",
     },
@@ -606,6 +856,8 @@ const Materials = () => {
       setCurrentImageIndex(0);
     } else if (folderId === "folder2") {
       setCurrentView("folder2");
+    } else if (folderId === "folder3") {
+      setCurrentView("folder3");
     }
   };
 
@@ -628,6 +880,12 @@ const Materials = () => {
     setSelectedCultureMaterial(null);
   };
 
+  const handleBackToFolder3 = () => {
+    setCurrentView("folder3");
+    setSelectedSubfolder(null);
+    setSelectedCultureMaterial(null);
+  };
+
   const handlePreviousImage = () => {
     if (currentImageIndex > 0) {
       setCurrentImageIndex(currentImageIndex - 1);
@@ -646,7 +904,9 @@ const Materials = () => {
       ? studyMaterials.folder1.materials[currentImageIndex]
       : null;
   const currentSubfolderData = selectedSubfolder
-    ? studyMaterials.folder2.subfolders[selectedSubfolder]
+    ? (selectedFolder === "folder3"
+      ? studyMaterials.folder3.subfolders[selectedSubfolder]
+      : studyMaterials.folder2.subfolders[selectedSubfolder])
     : null;
 
   return (
@@ -711,10 +971,9 @@ const Materials = () => {
                       <span className="text-gray-700 font-semibold">
                         {folder.id === "folder1"
                           ? `${studyMaterials.folder1.materials.length} Materi`
-                          : `${
-                              Object.keys(studyMaterials.folder2.subfolders)
-                                .length
-                            } Sub Bab`}
+                          : `${Object.keys(studyMaterials[folder.id].subfolders)
+                            .length
+                          } Sub Bab`}
                       </span>
                     </div>
                   </CardContent>
@@ -738,10 +997,10 @@ const Materials = () => {
               </Button>
             </div>
 
-            <Card className="bg-white/90 backdrop-blur-sm shadow-2xl border-4 border-blue-200">
+            <Card className="bg-white/90 backdrop-blur-sm shadow-2xl border-4 border-green-200">
               <CardContent className="p-0">
-                <div className="flex items-center justify-center h-40 bg-blue-100">
-                  <h2 className="text-3xl font-bold text-blue-800 text-center">
+                <div className="flex items-center justify-center h-40 bg-green-100">
+                  <h2 className="text-3xl font-bold text-green-800 text-center">
                     {currentMaterial.title}
                   </h2>
                 </div>
@@ -760,7 +1019,7 @@ const Materials = () => {
                     <Button
                       onClick={handlePreviousImage}
                       disabled={currentImageIndex === 0}
-                      className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                      className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
                     >
                       <ChevronLeft size={20} className="mr-1" />
                       Before
@@ -770,11 +1029,10 @@ const Materials = () => {
                       {studyMaterials.folder1.materials.map((_, index) => (
                         <div
                           key={index}
-                          className={`w-3 h-3 rounded-full ${
-                            index === currentImageIndex
-                              ? "bg-blue-600"
-                              : "bg-gray-300"
-                          }`}
+                          className={`w-3 h-3 rounded-full ${index === currentImageIndex
+                            ? "bg-green-600"
+                            : "bg-gray-300"
+                            }`}
                         />
                       ))}
                     </div>
@@ -785,7 +1043,7 @@ const Materials = () => {
                         currentImageIndex ===
                         studyMaterials.folder1.materials.length - 1
                       }
-                      className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                      className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
                     >
                       Next
                       <ChevronRight size={20} className="ml-1" />
@@ -859,17 +1117,74 @@ const Materials = () => {
           </div>
         )}
 
+        {/* Folder 3 - Subfolders View */}
+        {currentView === "folder3" && (
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-6">
+              <Button
+                onClick={handleBackToFolders}
+                variant="outline"
+                className="bg-white/80 backdrop-blur-sm hover:bg-white/90 border-2 border-gray-300 rounded-full px-6 py-3"
+              >
+                <ArrowLeft className="w-5 h-5 mr-2" />
+                Back to Folder
+              </Button>
+            </div>
+
+            <div className="text-center mb-12">
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                Culture of Semarang
+              </h1>
+              <p className="text-lg text-gray-600">
+                Discover the unique traditions, food, places, and festivals of Semarang
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {Object.entries(studyMaterials.folder3.subfolders).map(
+                ([key, subfolder]) => (
+                  <Card
+                    key={key}
+                    onClick={() => handleSubfolderClick(key)}
+                    className="bg-white/90 backdrop-blur-sm shadow-xl border-4 border-green-200 cursor-pointer transform hover:-translate-y-2 transition-all duration-300 text-center"
+                  >
+                    <CardContent className="p-6">
+                      <div className="mb-4">
+                        <BookOpen
+                          size={48}
+                          className="mx-auto text-green-500"
+                        />
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">
+                        {subfolder.name}
+                      </h3>
+                      <p className="text-gray-600 text-sm">
+                        {subfolder.description}
+                      </p>
+                      <div className="mt-4 bg-green-50 rounded-lg p-2">
+                        <span className="text-green-700 font-semibold text-sm">
+                          {subfolder.materials.length} Materials
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Subfolder Content View - Culture (Sub Bab 2) */}
         {currentView === "subfolder" && currentSubfolderData && currentSubfolderData.type === "culture" && (
           <div className="max-w-4xl mx-auto">
             <div className="mb-6">
               <Button
-                onClick={handleBackToFolder2}
+                onClick={selectedFolder === "folder3" ? handleBackToFolder3 : handleBackToFolder2}
                 variant="outline"
                 className="bg-white/80 backdrop-blur-sm hover:bg-white/90 border-2 border-gray-300 rounded-full px-6 py-3"
               >
                 <ArrowLeft className="w-5 h-5 mr-2" />
-                Back to Indonesia Culture
+                {selectedFolder === "folder3" ? "Back to Culture of Semarang" : "Back to Indonesia Culture"}
               </Button>
             </div>
 
