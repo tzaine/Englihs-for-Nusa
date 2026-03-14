@@ -12,9 +12,7 @@ const StudentQuiz = () => {
   const [selectedFolder, setSelectedFolder] = useState(null);
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState([]);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(false);
+  const [showConfirmSubmit, setShowConfirmSubmit] = useState(false);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
@@ -29,52 +27,46 @@ const StudentQuiz = () => {
   const startQuiz = (folderId) => {
     setSelectedFolder(folderId);
     setCurrentQ(0);
-    setAnswers([]);
-    setSelectedAnswer(null);
-    setShowFeedback(false);
+    setAnswers(new Array(questionsData[folderId].length).fill(null));
+    setShowConfirmSubmit(false);
     setSaved(false);
     setView("quiz");
   };
 
   const handleAnswer = (idx) => {
-    if (showFeedback) return;
-    const correct = currentQuestions[currentQ].correctAnswer === idx;
-    setSelectedAnswer(idx);
-    setIsCorrect(correct);
-    setShowFeedback(true);
     const newAnswers = [...answers];
-    newAnswers[currentQ] = { selected: idx, correct: currentQuestions[currentQ].correctAnswer, isCorrect: correct };
+    newAnswers[currentQ] = idx;
     setAnswers(newAnswers);
   };
 
   const handleNext = () => {
     if (currentQ < totalQ - 1) {
       setCurrentQ(currentQ + 1);
-      setSelectedAnswer(answers[currentQ + 1]?.selected ?? null);
-      setShowFeedback(false);
-      setIsCorrect(false);
     } else {
-      // Show result
-      const score = answers.filter(a => a.isCorrect).length;
-      if (student && !saved) {
-        saveQuizScore({ user_student_id: student.id, folder: selectedFolder, score, total: totalQ });
-        setSaved(true);
-      }
-      setView("result");
+      setShowConfirmSubmit(true);
     }
   };
 
   const handlePrev = () => {
-    if (currentQ > 0) {
-      setCurrentQ(currentQ - 1);
-      setSelectedAnswer(answers[currentQ - 1]?.selected ?? null);
-      setShowFeedback(answers[currentQ - 1] !== undefined);
-      setIsCorrect(answers[currentQ - 1]?.isCorrect ?? false);
-    }
+    if (currentQ > 0) setCurrentQ(currentQ - 1);
   };
 
-  const score = answers.filter(a => a.isCorrect).length;
-  const pct = totalQ > 0 ? Math.round((score / totalQ) * 100) : 0;
+  const confirmSubmission = () => {
+    setShowConfirmSubmit(false);
+    let scoreCount = 0;
+    answers.forEach((ans, idx) => {
+      if (ans === currentQuestions[idx].correctAnswer) scoreCount++;
+    });
+    
+    if (student && !saved) {
+      saveQuizScore({ user_student_id: student.id, folder: selectedFolder, score: scoreCount, total: totalQ });
+      setSaved(true);
+    }
+    setView("result");
+  };
+
+  const finalScore = answers.reduce((acc, ans, idx) => acc + (ans === currentQuestions[idx]?.correctAnswer ? 1 : 0), 0);
+  const pct = totalQ > 0 ? Math.round((finalScore / totalQ) * 100) : 0;
 
   const getBg = () => "linear-gradient(135deg, #f0f4ff, #ede9fe, #fce7f3)";
 
@@ -148,20 +140,16 @@ const StudentQuiz = () => {
                 let bg = "rgba(255,255,255,0.88)";
                 let border = "2px solid #e5e7eb";
                 let color = "#1f2937";
-                if (showFeedback) {
-                  if (idx === currentQuestions[currentQ].correctAnswer) {
-                    bg = "#dcfce7"; border = "2px solid #86efac"; color = "#15803d";
-                  } else if (idx === selectedAnswer && !isCorrect) {
-                    bg = "#fee2e2"; border = "2px solid #fca5a5"; color = "#dc2626";
-                  }
-                } else if (selectedAnswer === idx) {
+                
+                if (answers[currentQ] === idx) {
                   bg = "#ede9fe"; border = "2px solid #6366f1"; color = "#4f46e5";
                 }
+                
                 return (
                   <button
                     key={idx}
                     onClick={() => handleAnswer(idx)}
-                    style={{ padding: "1rem 1.25rem", borderRadius: 14, border, background: bg, color, fontWeight: 500, textAlign: "left", cursor: showFeedback ? "default" : "pointer", transition: "all .15s", fontSize: "0.9rem", lineHeight: 1.5 }}
+                    style={{ padding: "1rem 1.25rem", borderRadius: 14, border, background: bg, color, fontWeight: 500, textAlign: "left", cursor: "pointer", transition: "all .15s", fontSize: "0.9rem", lineHeight: 1.5 }}
                   >
                     <span style={{ fontWeight: 700, marginRight: 8 }}>{String.fromCharCode(65 + idx)}.</span>
                     {opt}
@@ -169,13 +157,6 @@ const StudentQuiz = () => {
                 );
               })}
             </div>
-
-            {/* Feedback */}
-            {showFeedback && (
-              <div className={`lms-alert ${isCorrect ? "lms-alert-success" : "lms-alert-error"}`}>
-                {isCorrect ? "✅ Correct!" : `❌ Incorrect. Correct answer: ${currentQuestions[currentQ]?.explanation}`}
-              </div>
-            )}
 
             {/* Nav buttons */}
             <div style={{ display: "flex", gap: "0.75rem" }}>
@@ -185,12 +166,38 @@ const StudentQuiz = () => {
               <button
                 className="lms-btn-primary"
                 onClick={handleNext}
-                disabled={selectedAnswer === null}
                 style={{ flex: 2 }}
               >
                 {currentQ === totalQ - 1 ? "🏁 Finish Quiz" : "Next →"}
               </button>
             </div>
+
+            {/* Confirm Submit Modal */}
+            {showConfirmSubmit && (
+              <div style={{ position: "fixed", inset: 0, zIndex: 100, background: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "1.5rem" }}>
+                <div style={{ background: "#fff", borderRadius: 20, padding: "2.5rem", width: "100%", maxWidth: 420, textAlign: "center", boxShadow: "0 10px 40px rgba(0,0,0,0.2)" }} className="auth-animate-in">
+                  <h3 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#1e1b4b", marginBottom: "0.75rem" }}>Ready to submit? 📝</h3>
+                  <p style={{ color: "#4b5563", fontSize: "0.95rem", marginBottom: "2rem", lineHeight: 1.5 }}>
+                    Are you sure you want to finish and submit your answers? You can no longer change your answers once submitted.
+                  </p>
+                  
+                  {answers.includes(null) && (
+                    <div className="lms-alert lms-alert-error" style={{ marginBottom: "1.5rem" }}>
+                      ⚠️ You still have unanswered questions!
+                    </div>
+                  )}
+
+                  <div style={{ display: "flex", gap: "0.75rem" }}>
+                    <button className="lms-btn-secondary" style={{ flex: 1 }} onClick={() => setShowConfirmSubmit(false)}>
+                      Go Back
+                    </button>
+                    <button className="lms-btn-primary" style={{ flex: 1 }} onClick={confirmSubmission}>
+                      Yes, Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </>
         )}
 
@@ -208,7 +215,7 @@ const StudentQuiz = () => {
                 {pct}%
               </div>
               <p style={{ color: "#374151", fontSize: "1.1rem", marginBottom: "2rem" }}>
-                You got <strong>{score}</strong> out of <strong>{totalQ}</strong> questions correct.
+                You got <strong>{finalScore}</strong> out of <strong>{totalQ}</strong> questions correct.
               </p>
               <p style={{ color: "#6366f1", fontWeight: 600, fontSize: "0.9rem", marginBottom: "2rem" }}>
                 ✅ Score saved to your profile!

@@ -31,22 +31,18 @@ export const registerStudent = ({ name, phone, email, password }) => {
 
   // Cek duplikat email
   if (students.find((s) => s.email.toLowerCase() === email.toLowerCase())) {
-    return { success: false, error: "Email sudah terdaftar. Silakan gunakan email lain atau login." };
+    return { success: false, error: "Email is already registered. Please log in using this email." };
   }
 
-  // Cek duplikat nomor telepon (jika diisi)
-  const trimmedPhone = phone?.trim() || "";
-  if (
-    trimmedPhone &&
-    students.find((s) => s.phone && s.phone === trimmedPhone)
-  ) {
-    return { success: false, error: "Nomor telepon sudah terdaftar. Silakan gunakan nomor lain atau login." };
+  // Cek duplikat nama
+  if (students.find((s) => s.name.toLowerCase() === name.trim().toLowerCase())) {
+    return { success: false, error: "This name is already registered. Please log in using your existing account, or choose a different name." };
   }
 
   const student = {
     id: uid(),
     name: name.trim(),
-    phone: trimmedPhone,
+    phone: phone ? phone.trim() : "",
     email: email.trim().toLowerCase(),
     password,
     createdAt: new Date().toISOString(),
@@ -61,9 +57,32 @@ export const loginStudent = (email, password) => {
     (s) =>
       s.email.toLowerCase() === email.toLowerCase() && s.password === password
   );
-  if (!student) return { success: false, error: "Email atau password salah." };
+  if (!student) return { success: false, error: "Incorrect email or password." };
   // Kembalikan data terbaru dari storage agar sesi selalu sinkron
   return { success: true, student };
+};
+
+// ============================================================
+// Forgot Password (Student)
+// ============================================================
+export const resetStudentPassword = (name, email, newPassword) => {
+  const students = getStudents();
+  
+  // Verify strict match for Name and Email
+  const studentIndex = students.findIndex(
+    (s) => s.email.toLowerCase() === email.toLowerCase() && 
+           s.name.toLowerCase() === name.trim().toLowerCase()
+  );
+
+  if (studentIndex === -1) {
+    return { success: false, error: "Student data (Name and Email) not found or do not match." };
+  }
+
+  // Update password
+  students[studentIndex].password = newPassword;
+  write(KEYS.STUDENTS, students);
+
+  return { success: true };
 };
 
 export const getStudentById = (id) =>

@@ -3,276 +3,557 @@ import { useNavigate } from "react-router-dom";
 import {
   registerStudent,
   loginStudent,
+  resetStudentPassword,
 } from "@/utils/lmsStorage";
 import {
   setStudentSession,
   setTeacherSession,
   TEACHER_CREDENTIALS,
 } from "@/utils/studentAuth";
-import "@/styles/lms.css";
+import "@/styles/auth.css";
 
 const LoginPortal = () => {
   const navigate = useNavigate();
 
-  // "select" | "student" | "teacher"
-  const [role, setRole] = useState("select");
+  // "login" | "register" | "forgot"
+  const [mode, setMode] = useState("login");
+  // "student" | "teacher"
+  const [role, setRole] = useState("student");
 
-  // student auth
-  const [tab, setTab] = useState("login");
+  // Captcha State
+  const [captchaParams, setCaptchaParams] = useState({ n1: 0, n2: 0, sum: 0 });
+
+  const generateCaptcha = () => {
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    setCaptchaParams({ n1: num1, n2: num2, sum: num1 + num2 });
+  };
+
+  // Student login
   const [loginData, setLoginData] = useState({ email: "", password: "" });
-  const [regData, setRegData] = useState({ name: "", phone: "", email: "", password: "", confirm: "" });
-
-  // teacher auth
-  const [teacherData, setTeacherData] = useState({ username: "", password: "" });
+  // Student register
+  const [regData, setRegData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    password: "",
+    confirm: "",
+  });
+  // Student reset password
+  const [resetData, setResetData] = useState({
+    name: "",
+    email: "",
+    newPassword: "",
+    confirm: "",
+    captcha: "",
+  });
+  // Teacher login
+  const [teacherData, setTeacherData] = useState({
+    username: "",
+    password: "",
+  });
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const reset = () => { setError(""); setSuccess(""); };
+  const reset = () => {
+    setError("");
+    setSuccess("");
+    if (mode !== "forgot") generateCaptcha();
+  };
 
-  // ---- STUDENT HANDLERS ----
+  // Switch mode
+  const goToRegister = () => {
+    setMode("register");
+    reset();
+  };
+  const goToLogin = () => {
+    setMode("login");
+    reset();
+  };
+  const goToForgot = () => {
+    setMode("forgot");
+    setResetData({ name: "", email: "", newPassword: "", confirm: "", captcha: "" });
+    generateCaptcha();
+    reset();
+  };
+
+  // ---- STUDENT LOGIN ----
   const handleStudentLogin = (e) => {
-    e.preventDefault(); reset(); setLoading(true);
+    e.preventDefault();
+    reset();
+    setLoading(true);
     const res = loginStudent(loginData.email, loginData.password);
     setLoading(false);
-    if (!res.success) { setError(res.error); return; }
+    if (!res.success) {
+      setError(res.error);
+      return;
+    }
     setStudentSession(res.student);
     navigate("/student/dashboard");
   };
 
+  // ---- STUDENT REGISTER ----
   const handleStudentRegister = (e) => {
-    e.preventDefault(); reset();
-    if (regData.password !== regData.confirm) { setError("Password tidak cocok."); return; }
-    if (regData.password.length < 6) { setError("Password minimal 6 karakter."); return; }
+    e.preventDefault();
+    reset();
+    if (regData.password !== regData.confirm) {
+      setError("Passwords do not match.");
+      return;
+    }
+    if (regData.password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return;
+    }
     setLoading(true);
-    const res = registerStudent({ name: regData.name, phone: regData.phone, email: regData.email, password: regData.password });
+    const res = registerStudent({
+      name: regData.name,
+      phone: regData.phone,
+      email: regData.email,
+      password: regData.password,
+    });
     setLoading(false);
-    if (!res.success) { setError(res.error); return; }
-    setSuccess("Akun berhasil dibuat! Silakan login. 🎉");
-    setTab("login");
+    if (!res.success) {
+      setError(res.error);
+      return;
+    }
+    setSuccess("Account created successfully! Please log in.");
+    setMode("login");
     setLoginData({ email: regData.email, password: "" });
     setRegData({ name: "", phone: "", email: "", password: "", confirm: "" });
   };
 
-  // ---- TEACHER HANDLER ----
+  // ---- STUDENT FORGOT PASSWORD ----
+  const handleStudentReset = (e) => {
+    e.preventDefault();
+    reset();
+    
+    // Validate Captcha
+    if (parseInt(resetData.captcha) !== captchaParams.sum) {
+      setError(`Incorrect math answer. Please try again.`);
+      generateCaptcha();
+      setResetData({ ...resetData, captcha: "" });
+      return;
+    }
+
+    if (resetData.newPassword !== resetData.confirm) {
+      setError("New passwords do not match.");
+      return;
+    }
+
+    if (resetData.newPassword.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return;
+    }
+
+    setLoading(true);
+    const res = resetStudentPassword(resetData.name, resetData.email, resetData.newPassword);
+    setLoading(false);
+
+    if (!res.success) {
+      setError(res.error);
+      generateCaptcha();
+      setResetData({ ...resetData, captcha: "" });
+      return;
+    }
+
+    setSuccess("Password reset successful! Please log in with your new password.");
+    setMode("login");
+    setLoginData({ email: resetData.email, password: "" });
+    setResetData({ name: "", email: "", newPassword: "", confirm: "", captcha: "" });
+  };
+
+  // ---- TEACHER LOGIN ----
   const handleTeacherLogin = (e) => {
-    e.preventDefault(); reset(); setLoading(true);
+    e.preventDefault();
+    reset();
+    setLoading(true);
     setTimeout(() => {
-      if (teacherData.username === TEACHER_CREDENTIALS.username && teacherData.password === TEACHER_CREDENTIALS.password) {
-        setTeacherSession({ username: TEACHER_CREDENTIALS.username, name: "Teacher", role: "teacher" });
+      if (
+        teacherData.username === TEACHER_CREDENTIALS.username &&
+        teacherData.password === TEACHER_CREDENTIALS.password
+      ) {
+        setTeacherSession({
+          username: TEACHER_CREDENTIALS.username,
+          name: "Teacher",
+          role: "teacher",
+        });
         navigate("/teacher/dashboard");
       } else {
-        setError("Username atau password salah.");
+        setError("Incorrect username or password.");
       }
       setLoading(false);
     }, 400);
   };
 
+  // Role toggle component
+  const RoleToggle = () => (
+    <div className="auth-role-toggle">
+      <button
+        type="button"
+        className={`auth-role-btn ${role === "student" ? "active" : ""}`}
+        onClick={() => {
+          setRole("student");
+          reset();
+        }}
+      >
+        Student
+      </button>
+      <button
+        type="button"
+        className={`auth-role-btn ${role === "teacher" ? "active" : ""}`}
+        onClick={() => {
+          setRole("teacher");
+          reset();
+          if (mode === "register") setMode("login");
+        }}
+      >
+        Teacher
+      </button>
+    </div>
+  );
+
+  const isRegister = mode === "register";
+  const isForgot = mode === "forgot";
+
   return (
-    <div
-      className="lms-page"
-      style={{
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 40%, #f64f59 100%)",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "2rem 1rem",
-        minHeight: "100vh",
-      }}
-    >
-      {/* Logo */}
-      <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
-        <span style={{ fontSize: "3rem" }}>🌴</span>
-        <h1 style={{ color: "#fff", fontWeight: 900, fontSize: "2rem", margin: "0.25rem 0 0.1rem" }}>
-          Nusa Tales
-        </h1>
-        <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "0.95rem" }}>Selamat datang! Pilih peranmu</p>
-      </div>
+    <div className="auth-page">
+      {/* Back to home */}
+      <button className="auth-back-btn" onClick={() => navigate("/")}>
+        ← Home
+      </button>
 
-      {/* ============ ROLE SELECTOR ============ */}
-      {role === "select" && (
-        <div style={{ display: "flex", gap: "1.25rem", flexWrap: "wrap", justifyContent: "center", maxWidth: 620 }}>
-          {/* Student Card */}
-          <div
-            onClick={() => { setRole("student"); reset(); }}
-            style={{
-              background: "rgba(255,255,255,0.95)",
-              borderRadius: 24,
-              padding: "2.5rem 2rem",
-              textAlign: "center",
-              cursor: "pointer",
-              width: 260,
-              boxShadow: "0 16px 50px rgba(0,0,0,.2)",
-              transition: "transform .2s, box-shadow .2s",
-              border: "3px solid transparent",
-            }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-8px)"; e.currentTarget.style.boxShadow = "0 24px 60px rgba(0,0,0,.28)"; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 16px 50px rgba(0,0,0,.2)"; }}
-          >
-            <div style={{ fontSize: "4rem", marginBottom: "0.75rem" }}>🎒</div>
-            <h2 style={{ fontWeight: 800, color: "#1e1b4b", fontSize: "1.4rem", margin: "0 0 0.4rem" }}>Siswa</h2>
-            <p style={{ color: "#6b7280", fontSize: "0.9rem", margin: "0 0 1.25rem" }}>
-              Akses latihan soal, kirim tulisan, dan lihat materi pelajaran
-            </p>
-            <span style={{ display: "inline-block", padding: "0.5rem 1.5rem", borderRadius: 999, background: "linear-gradient(135deg, #6366f1, #8b5cf6)", color: "#fff", fontWeight: 700, fontSize: "0.9rem" }}>
-              Masuk sebagai Siswa →
-            </span>
-          </div>
+      <div
+        className={`auth-container ${isRegister || isForgot ? "register-active" : ""}`}
+      >
+        {/* ============ LOGIN FORM PANEL ============ */}
+        <div className="auth-form-panel auth-login-form">
+          <h1 className="auth-form-title">Log In.</h1>
 
-          {/* Teacher Card */}
-          <div
-            onClick={() => { setRole("teacher"); reset(); }}
-            style={{
-              background: "rgba(255,255,255,0.95)",
-              borderRadius: 24,
-              padding: "2.5rem 2rem",
-              textAlign: "center",
-              cursor: "pointer",
-              width: 260,
-              boxShadow: "0 16px 50px rgba(0,0,0,.2)",
-              transition: "transform .2s, box-shadow .2s",
-            }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-8px)"; e.currentTarget.style.boxShadow = "0 24px 60px rgba(0,0,0,.28)"; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 16px 50px rgba(0,0,0,.2)"; }}
-          >
-            <div style={{ fontSize: "4rem", marginBottom: "0.75rem" }}>🎓</div>
-            <h2 style={{ fontWeight: 800, color: "#1e1b4b", fontSize: "1.4rem", margin: "0 0 0.4rem" }}>Guru</h2>
-            <p style={{ color: "#6b7280", fontSize: "0.9rem", margin: "0 0 1.25rem" }}>
-              Koreksi tulisan siswa, lihat laporan nilai, dan kelola kelas
-            </p>
-            <span style={{ display: "inline-block", padding: "0.5rem 1.5rem", borderRadius: 999, background: "linear-gradient(135deg, #1e1b4b, #4338ca)", color: "#fff", fontWeight: 700, fontSize: "0.9rem" }}>
-              Masuk sebagai Guru →
-            </span>
-          </div>
-        </div>
-      )}
+          <RoleToggle />
 
-      {/* ============ STUDENT FORM ============ */}
-      {role === "student" && (
-        <div className="lms-auth-card" style={{ maxWidth: 460, width: "100%" }}>
-          {/* Back */}
-          <button
-            onClick={() => { setRole("select"); reset(); }}
-            style={{ background: "none", border: "none", color: "#6b7280", cursor: "pointer", fontSize: "0.88rem", marginBottom: "1rem", padding: 0, display: "flex", alignItems: "center", gap: 4 }}
-          >
-            ← Ganti peran
-          </button>
-
-          <div style={{ textAlign: "center", marginBottom: "1rem" }}>
-            <div style={{ fontSize: "2rem" }}>🎒</div>
-            <h2 style={{ fontWeight: 800, color: "#1e1b4b", margin: "4px 0 0" }}>Portal Siswa</h2>
-          </div>
-
-          {/* Tabs */}
-          <div style={{ display: "flex", gap: 8, background: "#f3f4f6", borderRadius: 14, padding: 6, marginBottom: "1.25rem" }}>
-            <button className={`lms-tab-btn ${tab === "login" ? "active" : ""}`} onClick={() => { setTab("login"); reset(); }}>🔑 Login</button>
-            <button className={`lms-tab-btn ${tab === "register" ? "active" : ""}`} onClick={() => { setTab("register"); reset(); }}>✨ Daftar</button>
-          </div>
-
-          {error && <div className="lms-alert lms-alert-error">{error}</div>}
-          {success && <div className="lms-alert lms-alert-success">{success}</div>}
-
-          {/* Login Form */}
-          {tab === "login" && (
-            <form onSubmit={handleStudentLogin}>
-              <div style={{ marginBottom: "1rem" }}>
-                <label style={{ display: "block", fontWeight: 600, marginBottom: 6, color: "#374151", fontSize: "0.9rem" }}>Email</label>
-                <input className="lms-input" type="email" placeholder="your@email.com" required value={loginData.email} onChange={e => setLoginData({ ...loginData, email: e.target.value })} />
-              </div>
-              <div style={{ marginBottom: "1.5rem" }}>
-                <label style={{ display: "block", fontWeight: 600, marginBottom: 6, color: "#374151", fontSize: "0.9rem" }}>Password</label>
-                <input className="lms-input" type="password" placeholder="••••••••" required value={loginData.password} onChange={e => setLoginData({ ...loginData, password: e.target.value })} />
-              </div>
-              <button className="lms-btn-primary" type="submit" disabled={loading}>{loading ? "Loading…" : "🚀 Login"}</button>
-            </form>
+          {error && !isRegister && (
+            <div className="auth-alert auth-alert-error">{error}</div>
+          )}
+          {success && !isRegister && (
+            <div className="auth-alert auth-alert-success">{success}</div>
           )}
 
-          {/* Register Form */}
-          {tab === "register" && (
-            <form onSubmit={handleStudentRegister}>
-              {[
-                { label: "Nama Lengkap", key: "name", type: "text", placeholder: "Nama kamu" },
-                { label: "Nomor HP", key: "phone", type: "tel", placeholder: "+62 8xx xxxx xxxx" },
-                { label: "Email", key: "email", type: "email", placeholder: "your@email.com" },
-                { label: "Password", key: "password", type: "password", placeholder: "Min. 6 karakter" },
-                { label: "Konfirmasi Password", key: "confirm", type: "password", placeholder: "Ulangi password" },
-              ].map(f => (
-                <div key={f.key} style={{ marginBottom: "1rem" }}>
-                  <label style={{ display: "block", fontWeight: 600, marginBottom: 6, color: "#374151", fontSize: "0.9rem" }}>{f.label}</label>
+          {role === "student" ? (
+            <form onSubmit={handleStudentLogin} key="student-login">
+              <div className="auth-input-group">
+                <label>Email</label>
+                <input
+                  className="auth-input"
+                  type="email"
+                  placeholder="email@example.com"
+                  required
+                  value={loginData.email}
+                  onChange={(e) =>
+                    setLoginData({ ...loginData, email: e.target.value })
+                  }
+                />
+              </div>
+              <div className="auth-input-group">
+                <label>Password</label>
+                <input
+                  className="auth-input"
+                  type="password"
+                  placeholder="Enter your password"
+                  required
+                  value={loginData.password}
+                  onChange={(e) =>
+                    setLoginData({ ...loginData, password: e.target.value })
+                  }
+                />
+              </div>
+              <div className="auth-form-footer">
+                <label>
+                  <input type="checkbox" /> Remember me
+                </label>
+                <button type="button" onClick={goToForgot}>Forgot password?</button>
+              </div>
+              <button
+                className="auth-submit-btn"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Processing..." : "Log In"}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleTeacherLogin} key="teacher-login">
+              <div className="auth-input-group">
+                <label>Username</label>
+                <input
+                  className="auth-input"
+                  type="text"
+                  placeholder="Teacher username"
+                  required
+                  value={teacherData.username}
+                  onChange={(e) =>
+                    setTeacherData({
+                      ...teacherData,
+                      username: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="auth-input-group">
+                <label>Password</label>
+                <input
+                  className="auth-input"
+                  type="password"
+                  placeholder="Enter your password"
+                  required
+                  value={teacherData.password}
+                  onChange={(e) =>
+                    setTeacherData({
+                      ...teacherData,
+                      password: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <button
+                className="auth-submit-btn teacher"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Processing..." : "Log In as Teacher"}
+              </button>
+            </form>
+          )}
+        </div>
+
+        {/* ============ OVERLAY PANEL (Image Side) ============ */}
+        <div className="auth-overlay-panel">
+          <div
+            className="auth-overlay-bg"
+            style={{ backgroundImage: "url('/nusa.png')" }}
+          />
+          <div className="auth-overlay-content">
+            {isRegister ? (
+              <>
+                <h2>
+                  Hello,
+                  <br />
+                  Friend!
+                </h2>
+                <p>
+                  Already have an account? Log in to
+                  <br />
+                  continue your learning journey.
+                </p>
+                <button
+                  className="auth-overlay-btn"
+                  type="button"
+                  onClick={goToLogin}
+                >
+                  Log In
+                </button>
+              </>
+            ) : isForgot ? (
+              <>
+                <h2>
+                  Forgot
+                  <br />
+                  Password?
+                </h2>
+                <p>
+                  Don't worry, just enter your name and
+                  <br />
+                  email to reset your password.
+                </p>
+                <button
+                  className="auth-overlay-btn"
+                  type="button"
+                  onClick={goToLogin}
+                >
+                  Back to Log In
+                </button>
+              </>
+            ) : (
+              <>
+                <h2>
+                  Start Your
+                  <br />
+                  Journey
+                </h2>
+                <p>
+                  Don't have an account? Sign up now
+                  <br />
+                  and start learning with us.
+                </p>
+                {role === "student" && (
+                  <button
+                    className="auth-overlay-btn"
+                    type="button"
+                    onClick={goToRegister}
+                  >
+                    Sign Up
+                  </button>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* ============ REGISTER / FORGOT FORM PANEL ============ */}
+        <div className="auth-form-panel auth-register-form">
+          <h1 className="auth-form-title">{isForgot ? "Reset Password." : "Sign Up."}</h1>
+
+          {error && (isRegister || isForgot) && (
+            <div className="auth-alert auth-alert-error">{error}</div>
+          )}
+
+          {isForgot ? (
+            <form onSubmit={handleStudentReset}>
+              <div className="auth-input-group">
+                <label>Full Name (Account Name)</label>
+                <input
+                  className="auth-input"
+                  type="text"
+                  placeholder="Exact name used during registration"
+                  required
+                  value={resetData.name}
+                  onChange={(e) =>
+                    setResetData({ ...resetData, name: e.target.value })
+                  }
+                />
+              </div>
+              <div className="auth-input-group">
+                <label>Registered Email</label>
+                <input
+                  className="auth-input"
+                  type="email"
+                  placeholder="email@example.com"
+                  required
+                  value={resetData.email}
+                  onChange={(e) =>
+                    setResetData({ ...resetData, email: e.target.value })
+                  }
+                />
+              </div>
+              <div className="auth-input-group">
+                <label>New Password</label>
+                <input
+                  className="auth-input"
+                  type="password"
+                  placeholder="Min. 6 characters"
+                  required
+                  value={resetData.newPassword}
+                  onChange={(e) =>
+                    setResetData({ ...resetData, newPassword: e.target.value })
+                  }
+                />
+              </div>
+              <div className="auth-input-group">
+                <label>Confirm New Password</label>
+                <input
+                  className="auth-input"
+                  type="password"
+                  placeholder="Repeat password"
+                  required
+                  value={resetData.confirm}
+                  onChange={(e) =>
+                    setResetData({ ...resetData, confirm: e.target.value })
+                  }
+                />
+              </div>
+              <div className="auth-input-group" style={{ background: "#f8fafc", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "10px" }}>
+                <label style={{ color: "#334155" }}>Security (Verification)</label>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "4px" }}>
+                  <span style={{ fontWeight: 800, fontSize: "1.1rem", background: "#cbd5e1", padding: "4px 12px", borderRadius: "6px", letterSpacing: "1px" }}>
+                    {captchaParams.n1} + {captchaParams.n2} = ?
+                  </span>
                   <input
-                    className="lms-input"
-                    type={f.type}
-                    placeholder={f.placeholder}
-                    required={f.key !== "phone"}
-                    value={regData[f.key]}
-                    onChange={e => setRegData({ ...regData, [f.key]: e.target.value })}
+                    className="auth-input"
+                    type="number"
+                    placeholder="Result"
+                    style={{ flex: 1, padding: "8px", background: "#fff", border: "1px solid #cbd5e1", borderRadius: "6px" }}
+                    required
+                    value={resetData.captcha}
+                    onChange={(e) =>
+                      setResetData({ ...resetData, captcha: e.target.value })
+                    }
                   />
                 </div>
-              ))}
-              <div style={{ marginTop: "0.5rem" }}>
-                <button className="lms-btn-primary" type="submit" disabled={loading}>{loading ? "Mendaftar…" : "✨ Buat Akun"}</button>
               </div>
+              <button
+                className="auth-submit-btn"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Saving..." : "Reset Password"}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleStudentRegister}>
+              <div className="auth-input-group">
+                <label>Full Name</label>
+                <input
+                  className="auth-input"
+                  type="text"
+                  placeholder="Your name"
+                  required
+                  value={regData.name}
+                  onChange={(e) =>
+                    setRegData({ ...regData, name: e.target.value })
+                  }
+                />
+              </div>
+              <div className="auth-input-group">
+                <label>Email</label>
+                <input
+                  className="auth-input"
+                  type="email"
+                  placeholder="email@example.com"
+                  required
+                  value={regData.email}
+                  onChange={(e) =>
+                    setRegData({ ...regData, email: e.target.value })
+                  }
+                />
+              </div>
+              <div className="auth-input-group">
+                <label>Password</label>
+                <input
+                  className="auth-input"
+                  type="password"
+                  placeholder="Min. 6 characters"
+                  required
+                  value={regData.password}
+                  onChange={(e) =>
+                    setRegData({ ...regData, password: e.target.value })
+                  }
+                />
+              </div>
+              <div className="auth-input-group">
+                <label>Confirm Password</label>
+                <input
+                  className="auth-input"
+                  type="password"
+                  placeholder="Repeat password"
+                  required
+                  value={regData.confirm}
+                  onChange={(e) =>
+                    setRegData({ ...regData, confirm: e.target.value })
+                  }
+                />
+              </div>
+              <button
+                className="auth-submit-btn"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Signing up..." : "Sign Up"}
+              </button>
             </form>
           )}
-
-          <div style={{ textAlign: "center", marginTop: "1rem" }}>
-            <button className="lms-btn-secondary" style={{ fontSize: "0.82rem" }} onClick={() => navigate("/")}>← Kembali ke Beranda</button>
-          </div>
         </div>
-      )}
-
-      {/* ============ TEACHER FORM ============ */}
-      {role === "teacher" && (
-        <div className="lms-auth-card" style={{ maxWidth: 400, width: "100%" }}>
-          <button
-            onClick={() => { setRole("select"); reset(); }}
-            style={{ background: "none", border: "none", color: "#6b7280", cursor: "pointer", fontSize: "0.88rem", marginBottom: "1rem", padding: 0 }}
-          >
-            ← Ganti peran
-          </button>
-
-          <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
-            <div style={{ fontSize: "2rem" }}>🎓</div>
-            <h2 style={{ fontWeight: 800, color: "#1e1b4b", margin: "4px 0 0" }}>Portal Guru</h2>
-          </div>
-
-          {error && <div className="lms-alert lms-alert-error">{error}</div>}
-
-          <form onSubmit={handleTeacherLogin}>
-            <div style={{ marginBottom: "1rem" }}>
-              <label style={{ display: "block", fontWeight: 600, marginBottom: 6, color: "#374151", fontSize: "0.9rem" }}>Username</label>
-              <input className="lms-input" type="text" placeholder="teacher" required value={teacherData.username} onChange={e => setTeacherData({ ...teacherData, username: e.target.value })} />
-            </div>
-            <div style={{ marginBottom: "1.75rem" }}>
-              <label style={{ display: "block", fontWeight: 600, marginBottom: 6, color: "#374151", fontSize: "0.9rem" }}>Password</label>
-              <input className="lms-input" type="password" placeholder="••••••••" required value={teacherData.password} onChange={e => setTeacherData({ ...teacherData, password: e.target.value })} />
-            </div>
-            <button className="lms-btn-primary" type="submit" disabled={loading}
-              style={{ background: "linear-gradient(135deg, #1e1b4b, #4338ca)" }}
-            >
-              {loading ? "Loading…" : "🎓 Login sebagai Guru"}
-            </button>
-          </form>
-
-          <div style={{ textAlign: "center", marginTop: "1rem" }}>
-            <button className="lms-btn-secondary" style={{ fontSize: "0.82rem" }} onClick={() => navigate("/")}>← Kembali ke Beranda</button>
-          </div>
-        </div>
-      )}
-
-      {/* Back to home (select screen only) */}
-      {role === "select" && (
-        <button
-          onClick={() => navigate("/")}
-          style={{ marginTop: "1.5rem", background: "rgba(255,255,255,0.15)", border: "2px solid rgba(255,255,255,0.4)", color: "#fff", borderRadius: 12, padding: "0.5rem 1.4rem", fontWeight: 600, fontSize: "0.88rem", cursor: "pointer", transition: "background .2s" }}
-          onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.25)"}
-          onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.15)"}
-        >
-          ← Kembali ke Beranda
-        </button>
-      )}
+      </div>
     </div>
   );
 };
