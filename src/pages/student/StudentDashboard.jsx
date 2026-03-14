@@ -72,12 +72,12 @@ const StudentDashboard = () => {
   return (
     <div
       className="lms-page"
-      style={{ background: "linear-gradient(135deg, #f0f4ff 0%, #fce7f3 50%, #fff7e6 100%)" }}
+      style={{ background: "linear-gradient(135deg, #fdf4ff 0%, #fffbeb 50%, #faf5ff 100%)" }}
     >
       {/* Floating blobs */}
       <div style={{ position: "fixed", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
-        <div style={{ position: "absolute", top: 40, left: 60, width: 200, height: 200, borderRadius: "50%", background: "rgba(99,102,241,.08)", filter: "blur(40px)" }} />
-        <div style={{ position: "absolute", bottom: 80, right: 80, width: 280, height: 280, borderRadius: "50%", background: "rgba(236,72,153,.08)", filter: "blur(50px)" }} />
+        <div style={{ position: "absolute", top: 40, left: 60, width: 250, height: 250, borderRadius: "50%", background: "rgba(139,92,246,.08)", filter: "blur(40px)" }} />
+        <div style={{ position: "absolute", bottom: 80, right: 80, width: 300, height: 300, borderRadius: "50%", background: "rgba(245,158,11,.08)", filter: "blur(50px)" }} />
       </div>
 
       {/* Header */}
@@ -98,12 +98,12 @@ const StudentDashboard = () => {
       <main style={{ position: "relative", zIndex: 10, maxWidth: 1000, margin: "0 auto", padding: "2rem 1.5rem" }}>
         {/* Welcome banner */}
         <div style={{
-          background: "linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899)",
+          background: "linear-gradient(135deg, #8b5cf6, #d946ef, #f59e0b)",
           borderRadius: 24,
           padding: "2rem 2.5rem",
           color: "#fff",
           marginBottom: "2rem",
-          boxShadow: "0 12px 40px rgba(99,102,241,.35)",
+          boxShadow: "0 12px 40px rgba(139,92,246,.35)",
         }}>
           <h1 style={{ fontSize: "2rem", fontWeight: 800, margin: 0 }}>
             {getGreeting()}, {student.name}! 🌟
@@ -116,10 +116,10 @@ const StudentDashboard = () => {
         {/* Stats row */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "1rem", marginBottom: "2rem" }}>
           {[
-            { label: "Exercises Done", value: quizScores.length, emoji: "🏆", color: "#6366f1" },
-            { label: "Avg Quiz Score", value: quizScores.length ? `${avgQuizScore}%` : "—", emoji: "📊", color: "#8b5cf6" },
-            { label: "Writings Submitted", value: submissions.length, emoji: "✍️", color: "#ec4899" },
-            { label: "Pending Review", value: pendingWriting, emoji: "⏳", color: "#f59e0b" },
+            { label: "Exercises Done", value: quizScores.length, emoji: "🏆", color: "#8b5cf6" },
+            { label: "Avg Quiz Score", value: quizScores.length ? `${avgQuizScore}%` : "—", emoji: "📊", color: "#d946ef" },
+            { label: "Writings Submitted", value: submissions.length, emoji: "✍️", color: "#f59e0b" },
+            { label: "Pending Review", value: pendingWriting, emoji: "⏳", color: "#6366f1" },
           ].map((stat) => (
             <div key={stat.label} style={{
               background: "rgba(255,255,255,0.85)",

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getTeacherSession, clearTeacherSession } from "@/utils/studentAuth";
 import { getStudents, getSubmissions, getQuizScores } from "@/utils/lmsStorage";
+import NusaSpeaking from "@/components/NusaSpeaking";
 import "@/styles/lms.css";
 
 const TeacherDashboard = () => {
@@ -66,54 +67,71 @@ const TeacherDashboard = () => {
   if (!teacher) return null;
 
   return (
-    <div className="lms-page" style={{ background: "linear-gradient(135deg, #1e1b4b 0%, #312e81 30%, #4338ca 60%, #6366f1 100%)", minHeight: "100vh" }}>
+    <div className="lms-page" style={{ background: "linear-gradient(135deg, #fdf4ff 0%, #fffbeb 50%, #faf5ff 100%)", minHeight: "100vh" }}>
       {/* Floating decorations */}
       <div style={{ position: "fixed", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
-        <div style={{ position: "absolute", top: -60, right: -60, width: 320, height: 320, borderRadius: "50%", background: "rgba(255,255,255,.04)" }} />
-        <div style={{ position: "absolute", bottom: -80, left: -80, width: 400, height: 400, borderRadius: "50%", background: "rgba(255,255,255,.03)" }} />
+        <div style={{ position: "absolute", top: 40, left: 60, width: 250, height: 250, borderRadius: "50%", background: "rgba(139,92,246,.08)", filter: "blur(40px)" }} />
+        <div style={{ position: "absolute", bottom: 80, right: 80, width: 300, height: 300, borderRadius: "50%", background: "rgba(245,158,11,.08)", filter: "blur(50px)" }} />
       </div>
 
       {/* Header */}
-      <header style={{ position: "relative", zIndex: 10, padding: "1.25rem 2rem", display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(0,0,0,.25)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,.1)" }}>
+      <header style={{ position: "relative", zIndex: 10, padding: "1.25rem 2rem", display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(255,255,255,0.7)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.8)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <span style={{ fontSize: "1.8rem" }}>🎓</span>
           <div>
-            <div style={{ fontWeight: 800, color: "#fff", fontSize: "1.1rem" }}>Teacher Dashboard</div>
-            <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,.65)" }}>Nusa Tales LMS</div>
+            <div style={{ fontWeight: 800, color: "#1e1b4b", fontSize: "1.1rem" }}>Nusa Tales</div>
+            <div style={{ fontSize: "0.75rem", color: "#6b7280" }}>Teacher Portal</div>
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <span style={{ color: "rgba(255,255,255,.85)", fontSize: "0.9rem", fontWeight: 600 }}>Welcome, Teacher 👋</span>
-          <button className="lms-logout-btn" onClick={handleLogout} style={{ background: "rgba(255,255,255,.1)", borderColor: "rgba(255,255,255,.3)", color: "#fff" }}>Logout</button>
+          <span style={{ color: "#374151", fontSize: "0.9rem", fontWeight: 600 }}>Welcome, Teacher 👋</span>
+          <button className="lms-logout-btn" onClick={handleLogout}>Logout</button>
         </div>
       </header>
 
       <main style={{ position: "relative", zIndex: 10, maxWidth: 1000, margin: "0 auto", padding: "2rem 1.5rem" }}>
+        {/* Welcome banner */}
+        <div style={{
+          background: "linear-gradient(135deg, #8b5cf6, #d946ef, #f59e0b)",
+          borderRadius: 24,
+          padding: "2rem 2.5rem",
+          color: "#fff",
+          marginBottom: "2rem",
+          boxShadow: "0 12px 40px rgba(139,92,246,.3)",
+        }}>
+          <h1 style={{ fontSize: "2rem", fontWeight: 800, margin: 0 }}>
+            Good Day, Teacher! 🌟
+          </h1>
+          <p style={{ margin: "0.5rem 0 0", opacity: 0.9, fontSize: "1rem" }}>
+            Ready to review your students' progress today?
+          </p>
+        </div>
+
         {/* Stats */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1rem", marginBottom: "2.5rem" }}>
           {[
-            { emoji: "👥", label: "Total Students", value: stats.students, color: "#a5f3fc" },
-            { emoji: "✍️", label: "Writing Submissions", value: stats.submissions, color: "#fde68a" },
-            { emoji: "⏳", label: "Pending Corrections", value: stats.pending, color: stats.pending > 0 ? "#fca5a5" : "#a5f3fc" },
-            { emoji: "🎮", label: "Quiz Attempts", value: stats.quizAttempts, color: "#c4b5fd" },
+            { emoji: "👥", label: "Total Students", value: stats.students, color: "#8b5cf6" },
+            { emoji: "✍️", label: "Writing Submissions", value: stats.submissions, color: "#f59e0b" },
+            { emoji: "⏳", label: "Pending Corrections", value: stats.pending, color: stats.pending > 0 ? "#ef4444" : "#10b981" },
+            { emoji: "🎮", label: "Quiz Attempts", value: stats.quizAttempts, color: "#d946ef" },
           ].map((s) => (
             <div key={s.label} style={{
-              background: "rgba(255,255,255,.12)",
-              border: "1px solid rgba(255,255,255,.2)",
-              backdropFilter: "blur(10px)",
+              background: "rgba(255,255,255,0.85)",
+              border: "2px solid rgba(255,255,255,0.7)",
+              boxShadow: "0 4px 20px rgba(0,0,0,.06)",
               borderRadius: 18,
               padding: "1.5rem 1.25rem",
               textAlign: "center",
             }}>
               <div style={{ fontSize: "1.8rem", marginBottom: 6 }}>{s.emoji}</div>
               <div style={{ fontSize: "2rem", fontWeight: 900, color: s.color }}>{s.value}</div>
-              <div style={{ fontSize: "0.78rem", color: "rgba(255,255,255,.75)", fontWeight: 500 }}>{s.label}</div>
+              <div style={{ fontSize: "0.78rem", color: "#6b7280", fontWeight: 500 }}>{s.label}</div>
             </div>
           ))}
         </div>
 
         {/* Navigation cards */}
-        <h2 style={{ color: "rgba(255,255,255,.9)", fontWeight: 700, marginBottom: "1rem", fontSize: "1.2rem" }}>📌 Quick Actions</h2>
+        <h2 style={{ color: "#1e1b4b", fontWeight: 700, marginBottom: "1rem", fontSize: "1.3rem" }}>📌 Quick Actions</h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>
           {navCards.map((card) => (
             <div
@@ -126,16 +144,17 @@ const TeacherDashboard = () => {
                 <span style={{
                   position: "absolute", top: 14, right: 14,
                   background: card.badgeColor, color: "#fff",
-                  padding: "2px 10px", borderRadius: 999, fontSize: "0.75rem", fontWeight: 700
+                  padding: "4px 12px", borderRadius: 999, fontSize: "0.75rem", fontWeight: 700,
+                  boxShadow: "0 2px 8px rgba(0,0,0,.2)"
                 }}>{card.badge}</span>
               )}
-              <div style={{ width: 52, height: 52, borderRadius: "50%", background: card.gradient, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", marginBottom: "0.9rem", boxShadow: "0 6px 20px rgba(0,0,0,.15)" }}>
+              <div style={{ width: 56, height: 56, borderRadius: "50%", background: card.gradient, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.6rem", marginBottom: "1rem", boxShadow: "0 6px 20px rgba(0,0,0,.15)" }}>
                 {card.emoji}
               </div>
-              <h3 style={{ fontWeight: 700, color: "#1e1b4b", fontSize: "1.1rem", margin: "0 0 0.3rem" }}>{card.title}</h3>
-              <p style={{ color: "#4b5563", fontSize: "0.88rem", margin: 0 }}>{card.desc}</p>
-              <div style={{ marginTop: "0.9rem" }}>
-                <span style={{ padding: "0.35rem 1rem", borderRadius: 999, background: card.gradient, color: "#fff", fontSize: "0.82rem", fontWeight: 700 }}>
+              <h3 style={{ fontWeight: 700, color: "#1e1b4b", fontSize: "1.2rem", margin: "0 0 0.4rem" }}>{card.title}</h3>
+              <p style={{ color: "#4b5563", fontSize: "0.9rem", margin: 0 }}>{card.desc}</p>
+              <div style={{ marginTop: "1rem" }}>
+                <span style={{ padding: "0.4rem 1rem", borderRadius: 999, background: card.gradient, color: "#fff", fontSize: "0.85rem", fontWeight: 700, boxShadow: "0 3px 10px rgba(0,0,0,.15)" }}>
                   Open →
                 </span>
               </div>
@@ -143,6 +162,9 @@ const TeacherDashboard = () => {
           ))}
         </div>
       </main>
+
+      {/* Floating chatbot for teacher */}
+      <NusaSpeaking role="teacher" />
     </div>
   );
 };

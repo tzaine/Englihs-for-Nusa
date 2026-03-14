@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 /**
  * Suggested Prompt cards — pulled from the learning materials.
  */
-const SUGGESTED_PROMPTS = [
+const STUDENT_PROMPTS = [
   {
     title: "Saman Dance",
     desc: "Traditional dance from Aceh",
@@ -23,6 +23,29 @@ const SUGGESTED_PROMPTS = [
     title: "Ngaben Ceremony",
     desc: "Balinese cremation ritual",
     opener: "Can you help me talk about the Ngaben ceremony from Bali? I want to practice describing Indonesian ceremonies in English.",
+  },
+];
+
+const TEACHER_PROMPTS = [
+  {
+    title: "Grading Rubric",
+    desc: "Create an English grading rubric",
+    opener: "Can you provide a comprehensive grading rubric for evaluating a student's descriptive text about Indonesian culture?",
+  },
+  {
+    title: "Correct Writing",
+    desc: "Help correct student's English writing",
+    opener: "I have a student's descriptive text that needs correction. Can you help me identify grammar mistakes, suggest improvements, and provide constructive feedback?",
+  },
+  {
+    title: "Teaching Ideas",
+    desc: "Ideas for teaching speaking",
+    opener: "What are some engaging and interactive activities I can use in my classroom to encourage students to practice speaking English?",
+  },
+  {
+    title: "Common Mistakes",
+    desc: "Identify common grammar issues",
+    opener: "What are the most common English grammar mistakes Indonesian students make when writing descriptive texts, and how can I help them improve?",
   },
 ];
 
@@ -48,7 +71,7 @@ const SpeechRecognition = typeof window !== "undefined"
   ? window.SpeechRecognition || window.webkitSpeechRecognition
   : null;
 
-const NusaSpeaking = () => {
+const NusaSpeaking = ({ role = "student" }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -223,8 +246,8 @@ const NusaSpeaking = () => {
             <div className="nspk-header-info">
               <div className="nspk-header-avatar">🎙️</div>
               <div className="nspk-header-text">
-                <h3>Nusa Speaking</h3>
-                <p>AI English Practice Partner</p>
+                <h3>{role === "teacher" ? "Nusa Grader" : "Nusa Speaking"}</h3>
+                <p>{role === "teacher" ? "AI Teacher Assistant" : "AI English Practice Partner"}</p>
               </div>
             </div>
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -243,11 +266,11 @@ const NusaSpeaking = () => {
               <div style={{ padding: "0.85rem 1rem 0.4rem", textAlign: "center" }}>
                 <div style={{ fontSize: "1.5rem", marginBottom: "0.3rem" }}>🎙️</div>
                 <p style={{ fontSize: "0.82rem", color: "#6b7280", margin: 0, lineHeight: 1.5 }}>
-                  Hi! I'm <strong>Nusa Speaking</strong>, your AI English conversation partner. Pick a topic or type your own question!
+                  Hi! I'm <strong>{role === "teacher" ? "Nusa Grader" : "Nusa Speaking"}</strong>, your AI {role === "teacher" ? "teacher assistant" : "English conversation partner"}. Pick a topic or type your own question!
                 </p>
               </div>
               <div className="nspk-prompts">
-                {SUGGESTED_PROMPTS.map((p, i) => (
+                {(role === "teacher" ? TEACHER_PROMPTS : STUDENT_PROMPTS).map((p, i) => (
                   <button key={i} className="nspk-prompt-card" onClick={() => startWithPrompt(p)}>
                     <div className="nspk-prompt-title">{p.title}</div>
                     <div className="nspk-prompt-desc">{p.desc}</div>
