@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getStudentSession, clearStudentSession } from "@/utils/studentAuth";
 import { getQuizScoresByStudent, getSubmissionsByStudent } from "@/utils/lmsStorage";
+import NusaSpeaking from "@/components/NusaSpeaking";
 import "@/styles/lms.css";
+
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
@@ -64,6 +66,7 @@ const StudentDashboard = () => {
     },
   ];
 
+
   if (!student) return null;
 
   return (
@@ -80,14 +83,14 @@ const StudentDashboard = () => {
       {/* Header */}
       <header style={{ position: "relative", zIndex: 10, padding: "1.25rem 2rem", display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(255,255,255,0.7)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.8)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <span style={{ fontSize: "1.8rem" }}>🌴</span>
+          <span style={{ fontSize: "1.8rem" }}></span>
           <div>
             <div style={{ fontWeight: 800, fontSize: "1.1rem", color: "#1e1b4b" }}>Nusa Tales</div>
             <div style={{ fontSize: "0.75rem", color: "#6b7280" }}>Student Portal</div>
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <span style={{ fontSize: "0.9rem", color: "#374151", fontWeight: 600 }}>Hi, {student.name.split(" ")[0]}! 👋</span>
+          <span style={{ fontSize: "0.9rem", color: "#374151", fontWeight: 600 }}>Hi, {student.name.split(" ")[0]}!</span>
           <button className="lms-logout-btn" onClick={handleLogout}>Logout</button>
         </div>
       </header>
@@ -208,6 +211,9 @@ const StudentDashboard = () => {
           </div>
         )}
       </main>
+
+      {/* Floating chatbot */}
+      <NusaSpeaking />
     </div>
   );
 };

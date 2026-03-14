@@ -15,4 +15,12 @@ export default defineConfig(() => ({
     },
   },
   assetsInclude: ['**/*.lottie'],
+  server: {
+    proxy: {
+      '/api/speak': {
+        target: 'http://localhost:5001',
+        changeOrigin: true,
+      },
+    },
+  },
 }));

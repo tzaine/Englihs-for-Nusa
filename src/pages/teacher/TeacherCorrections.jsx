@@ -123,8 +123,34 @@ const TeacherCorrections = () => {
                   <div style={{ padding: "0 1.5rem 1.5rem" }}>
                     <div style={{ borderTop: "1px solid #f3f4f6", paddingTop: "1rem", marginBottom: "1rem" }}>
                       <p style={{ fontWeight: 600, color: "#374151", marginBottom: 6, fontSize: "0.88rem" }}>Student's Writing:</p>
-                      <div style={{ background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 12, padding: "1rem 1.25rem", whiteSpace: "pre-wrap", fontSize: "0.9rem", lineHeight: 1.75, color: "#1f2937", maxHeight: 320, overflowY: "auto" }}>
-                        {sub.content}
+                      <div style={{ background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 12, padding: "1rem 1.25rem", whiteSpace: "pre-wrap", fontSize: "0.9rem", lineHeight: 1.75, color: "#1f2937", maxHeight: 400, overflowY: "auto" }}>
+                        {(() => {
+                          const QUESTIONS = [
+                            "Write a descriptive text about Lawang Sewu Semarang.",
+                            "Write a descriptive text about Lumpia Semarang.",
+                            "Write a descriptive text about Borobudur Temple.",
+                            "Write a descriptive text about the Kota Lama Semarang.",
+                            "Choose one traditional Indonesian cultural object (dance, food, place, or clothing) and write a descriptive text about it."
+                          ];
+                          try {
+                            const parsed = JSON.parse(sub.content);
+                            if (Array.isArray(parsed)) {
+                              return (
+                                <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                                  {parsed.map((ans, idx) => (
+                                    <div key={idx}>
+                                      <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#4f46e5" }}>Question {idx + 1}: {QUESTIONS[idx]}</div>
+                                      <p style={{ margin: "0.5rem 0 0" }}>{ans}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              );
+                            }
+                          } catch (e) {
+                            // ignore
+                          }
+                          return sub.content;
+                        })()}
                       </div>
                     </div>
 

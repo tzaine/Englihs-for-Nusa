@@ -17,6 +17,7 @@ import StudentDashboard from "./pages/student/StudentDashboard";
 import StudentQuiz from "./pages/student/StudentQuiz";
 import StudentWriting from "./pages/student/StudentWriting";
 
+
 // ---- LMS: Teacher Pages ----
 import TeacherLogin from "./pages/teacher/TeacherLogin";
 import TeacherDashboard from "./pages/teacher/TeacherDashboard";
@@ -47,6 +48,7 @@ const App = () => (
           <Route path="/student/dashboard" element={<StudentDashboard />} />
           <Route path="/student/quiz" element={<StudentQuiz />} />
           <Route path="/student/writing" element={<StudentWriting />} />
+
 
           {/* ---- LMS: Teacher routes ---- */}
           <Route path="/teacher-login" element={<TeacherLogin />} />

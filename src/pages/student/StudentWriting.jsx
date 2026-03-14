@@ -4,24 +4,23 @@ import { getStudentSession, clearStudentSession } from "@/utils/studentAuth";
 import { saveSubmission, getSubmissionsByStudent } from "@/utils/lmsStorage";
 import "@/styles/lms.css";
 
-const PROMPTS = [
-  "Describe a traditional Indonesian house you know.",
-  "Write about your favorite traditional dance from Indonesia.",
-  "Describe a traditional weapon from your region.",
-  "Write about a traditional ceremony you have witnessed or heard of.",
-  "Describe a traditional costume from your culture.",
+const QUESTIONS = [
+  "Write a descriptive text about Lawang Sewu Semarang.",
+  "Write a descriptive text about Lumpia Semarang.",
+  "Write a descriptive text about Borobudur Temple.",
+  "Write a descriptive text about the Kota Lama Semarang.",
+  "Choose one traditional Indonesian cultural object (dance, food, place, or clothing) and write a descriptive text about it.",
 ];
 
 const StudentWriting = () => {
   const navigate = useNavigate();
   const [student, setStudent] = useState(null);
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [answers, setAnswers] = useState(["", "", "", "", ""]);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [mySubmissions, setMySubmissions] = useState([]);
-  const [promptIdx] = useState(() => Math.floor(Math.random() * PROMPTS.length));
   const [view, setView] = useState("write"); // "write" | "history"
 
   useEffect(() => {
@@ -35,20 +34,20 @@ const StudentWriting = () => {
     e.preventDefault();
     setError("");
     setSuccess("");
-    if (content.trim().split(/\s+/).length < 30) {
-      setError("Your text is too short! Please write at least 30 words.");
+    const isValid = answers.every(ans => ans.trim().split(/\s+/).length >= 10);
+    if (!isValid) {
+      setError("Your texts are too short! Please write at least 10 words for each question.");
       return;
     }
     setLoading(true);
+    const content = JSON.stringify(answers);
     const entry = saveSubmission({ user_student_id: student.id, title, content });
     setMySubmissions((prev) => [...prev, entry]);
     setLoading(false);
     setSuccess("✅ Your writing has been submitted! Your teacher will review it soon.");
     setTitle("");
-    setContent("");
+    setAnswers(["", "", "", "", ""]);
   };
-
-  const wordCount = content.trim() === "" ? 0 : content.trim().split(/\s+/).length;
 
   const getScoreBadge = (score) => {
     if (score === null) return <span className="lms-badge lms-badge-gray">Pending</span>;
@@ -78,15 +77,6 @@ const StudentWriting = () => {
         {/* ---- WRITE VIEW ---- */}
         {view === "write" && (
           <>
-            {/* Writing prompt */}
-            <div style={{ background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", border: "2px solid #c4b5fd", borderRadius: 18, padding: "1.25rem 1.5rem", marginBottom: "1.5rem" }}>
-              <p style={{ margin: 0, fontWeight: 600, color: "#4f46e5", fontSize: "0.9rem" }}>📝 Writing Prompt (optional inspiration):</p>
-              <p style={{ margin: "0.3rem 0 0", color: "#5b21b6", fontSize: "1rem" }}>{PROMPTS[promptIdx]}</p>
-            </div>
-
-            {error && <div className="lms-alert lms-alert-error">{error}</div>}
-            {success && <div className="lms-alert lms-alert-success">{success}</div>}
-
             <form onSubmit={handleSubmit}>
               {/* Title */}
               <div style={{ marginBottom: "1.25rem" }}>
@@ -96,30 +86,39 @@ const StudentWriting = () => {
                 <input
                   className="lms-input"
                   type="text"
-                  placeholder="e.g. Rumah Tongkonan — A Traditional House of Toraja"
+                  placeholder="e.g. My English Writing Task"
                   required
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </div>
 
-              {/* Content */}
-              <div style={{ marginBottom: "1rem" }}>
-                <label style={{ display: "block", fontWeight: 700, color: "#374151", marginBottom: 6, fontSize: "0.95rem" }}>
-                  Your Descriptive Text * <span style={{ fontWeight: 400, color: "#6b7280" }}>(min. 30 words)</span>
-                </label>
-                <textarea
-                  className="lms-textarea"
-                  rows={12}
-                  placeholder="Write your descriptive text in English here. Use Identification and Description structure. Describe your chosen cultural topic with adjectives and present tense verbs."
-                  required
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                />
-                <div style={{ textAlign: "right", fontSize: "0.8rem", color: wordCount >= 30 ? "#16a34a" : "#f59e0b", fontWeight: 600, marginTop: 4 }}>
-                  {wordCount} words {wordCount < 30 ? `(need ${30 - wordCount} more)` : "✅"}
-                </div>
-              </div>
+              {/* Contains the 5 essay questions */}
+              {QUESTIONS.map((q, idx) => {
+                const wordCount = answers[idx].trim() === "" ? 0 : answers[idx].trim().split(/\s+/).length;
+                return (
+                  <div key={idx} style={{ marginBottom: "1.5rem", background: "#fff", padding: "1.25rem", borderRadius: "12px", border: "1px solid #e5e7eb" }}>
+                    <label style={{ display: "block", fontWeight: 700, color: "#374151", marginBottom: 8, fontSize: "0.95rem" }}>
+                      {idx + 1}. {q} <span style={{ fontWeight: 400, color: "#6b7280" }}>(min. 10 words)</span>
+                    </label>
+                    <textarea
+                      className="lms-textarea"
+                      rows={5}
+                      placeholder={`Write your answer here for question ${idx + 1}...`}
+                      required
+                      value={answers[idx]}
+                      onChange={(e) => {
+                        const newAnswers = [...answers];
+                        newAnswers[idx] = e.target.value;
+                        setAnswers(newAnswers);
+                      }}
+                    />
+                    <div style={{ textAlign: "right", fontSize: "0.8rem", color: wordCount >= 10 ? "#16a34a" : "#f59e0b", fontWeight: 600, marginTop: 4 }}>
+                      {wordCount} words {wordCount < 10 ? `(need ${10 - wordCount} more)` : "✅"}
+                    </div>
+                  </div>
+                );
+              })}
 
               {/* Tips */}
               <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 12, padding: "0.9rem 1.1rem", marginBottom: "1.5rem" }}>
@@ -156,9 +155,32 @@ const StudentWriting = () => {
                       <h3 style={{ margin: 0, fontWeight: 700, color: "#1e1b4b", fontSize: "1.05rem" }}>{sub.title}</h3>
                       {getScoreBadge(sub.score)}
                     </div>
-                    <p style={{ color: "#374151", fontSize: "0.9rem", lineHeight: 1.65, margin: "0 0 0.75rem", whiteSpace: "pre-wrap" }}>
-                      {sub.content.length > 300 ? sub.content.slice(0, 300) + "…" : sub.content}
-                    </p>
+                    {(() => {
+                      try {
+                        const parsed = JSON.parse(sub.content);
+                        if (Array.isArray(parsed)) {
+                          return (
+                            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginBottom: "0.75rem" }}>
+                              {parsed.map((ans, idx) => (
+                                <div key={idx}>
+                                  <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#4b5563" }}>Q{idx + 1}: {QUESTIONS[idx]}</div>
+                                  <p style={{ color: "#374151", fontSize: "0.9rem", lineHeight: 1.5, margin: "0.25rem 0 0", whiteSpace: "pre-wrap" }}>
+                                    {ans}
+                                  </p>
+                                </div>
+                              ))}
+                            </div>
+                          );
+                        }
+                      } catch (e) {
+                        // Not JSON, display normally
+                      }
+                      return (
+                        <p style={{ color: "#374151", fontSize: "0.9rem", lineHeight: 1.65, margin: "0 0 0.75rem", whiteSpace: "pre-wrap" }}>
+                          {sub.content.length > 300 ? sub.content.slice(0, 300) + "…" : sub.content}
+                        </p>
+                      );
+                    })()}
                     {sub.feedback && (
                       <div style={{ background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 10, padding: "0.6rem 0.9rem", marginTop: "0.5rem" }}>
                         <p style={{ margin: 0, fontSize: "0.85rem", color: "#1d4ed8", fontWeight: 700 }}>Teacher Feedback:</p>
