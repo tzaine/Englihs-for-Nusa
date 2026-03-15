@@ -97,6 +97,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ reply });
   } catch (err) {
     console.error("NusaSpeak API error:", err);
-    return res.status(500).json({ error: "Failed to get response from AI. Please try again." });
+    return res.status(500).json({ error: `AI Error: ${err.message}` });
   }
 }
