@@ -203,7 +203,6 @@
   border: none;
   background: linear-gradient(135deg, #1e1b4b, #312e81);
   color: #fff;
-  font-size: 1.6rem;
   cursor: pointer;
   box-shadow: 0 6px 24px rgba(30,27,75,0.45);
   z-index: 9999;
@@ -211,6 +210,8 @@
   align-items: center;
   justify-content: center;
   transition: transform 0.2s, box-shadow 0.2s;
+  padding: 0;
+  overflow: hidden;
 }
 .nspk-fab:hover {
   transform: scale(1.1);

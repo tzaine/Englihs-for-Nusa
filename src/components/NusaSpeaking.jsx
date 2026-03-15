@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import myCustomIcon from "../assets/chatbot.png";
 
 /**
  * Suggested Prompt cards — pulled from the learning materials.
@@ -233,9 +234,9 @@ const NusaSpeaking = ({ role = "student" }) => {
 
   return (
     <>
-      {/* Floating Action Button */}
+
       <button className="nspk-fab" onClick={toggleOpen} title="Nusa Speaking">
-        {isOpen ? "✕" : "💬"}
+        {isOpen ? "✕" : <img src={myCustomIcon} alt="chat" style={{ width: '36px', height: '36px', objectFit: 'contain' }} />}
       </button>
 
       {/* Popup Window */}
@@ -244,7 +245,7 @@ const NusaSpeaking = ({ role = "student" }) => {
           {/* Header */}
           <div className="nspk-header">
             <div className="nspk-header-info">
-              <div className="nspk-header-avatar">🎙️</div>
+              <div className="nspk-header-avatar">🤖</div>
               <div className="nspk-header-text">
                 <h3>{role === "teacher" ? "Nusa Grader" : "Nusa Speaking"}</h3>
                 <p>{role === "teacher" ? "AI Teacher Assistant" : "AI English Practice Partner"}</p>
@@ -264,7 +265,7 @@ const NusaSpeaking = ({ role = "student" }) => {
           {!hasMessages && !feedback && (
             <>
               <div style={{ padding: "0.85rem 1rem 0.4rem", textAlign: "center" }}>
-                <div style={{ fontSize: "1.5rem", marginBottom: "0.3rem" }}>🎙️</div>
+                <div style={{ fontSize: "1.5rem", marginBottom: "0.3rem" }}>🤖</div>
                 <p style={{ fontSize: "0.82rem", color: "#6b7280", margin: 0, lineHeight: 1.5 }}>
                   Hi! I'm <strong>{role === "teacher" ? "Nusa Grader" : "Nusa Speaking"}</strong>, your AI {role === "teacher" ? "teacher assistant" : "English conversation partner"}. Pick a topic or type your own question!
                 </p>
@@ -337,7 +338,7 @@ const NusaSpeaking = ({ role = "student" }) => {
               <textarea
                 ref={inputRef}
                 className="nspk-input"
-                placeholder={isListening ? "🎤 Listening… speak now" : "Type or tap 🎤 to speak…"}
+                placeholder={isListening ? "Listening… speak now" : "Type or tap to speak…"}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
