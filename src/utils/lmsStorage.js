@@ -162,6 +162,20 @@ export const gradeSubmission = (submissionId, { score, feedback }) => {
   return submissions[idx];
 };
 
+export const deleteSubmission = (submissionId) => {
+  const submissions = getSubmissions().filter((s) => s.id !== submissionId);
+  write(KEYS.SUBMISSIONS, submissions);
+};
+
+export const editSubmission = (submissionId, updates) => {
+  const submissions = getSubmissions();
+  const idx = submissions.findIndex((s) => s.id === submissionId);
+  if (idx < 0) return null;
+  submissions[idx] = { ...submissions[idx], ...updates };
+  write(KEYS.SUBMISSIONS, submissions);
+  return submissions[idx];
+};
+
 // ============================================================
 // REPORT — combined data for teacher report page
 // Returns array of { student, quizScores, writingScores, avg }

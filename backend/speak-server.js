@@ -65,7 +65,7 @@ app.post("/api/speak", async (req, res) => {
     const genAI = new GoogleGenerativeAI(apiKey);
 
     if (isFeedback) {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
       const conversationText = messages
         .map((m) => `${m.role === "user" ? "Student" : "NusaSpeak"}: ${m.content}`)
         .join("\n");
@@ -79,7 +79,7 @@ app.post("/api/speak", async (req, res) => {
 
     const systemWithTopic = `${SYSTEM_PROMPT}\n\nCurrent conversation topic: ${topic || "General English conversation"}`;
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash",
+      model: "gemini-2.5-flash",
       systemInstruction: systemWithTopic
     });
 
